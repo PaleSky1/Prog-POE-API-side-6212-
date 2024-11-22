@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mB2fttBBkdw=",
+  "dgSpecHash": "cQeWK3fKe0A=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Logan\\source\\repos\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj",
+  "projectFilePath": "C:\\Users\\Logan\\Source\\Repos\\Prog-POE-API-side-6212-\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Logan\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.8\\microsoft.aspnetcore.openapi.8.0.8.nupkg.sha512",
     "C:\\Users\\Logan\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

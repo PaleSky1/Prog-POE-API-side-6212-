@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Logan\\source\\repos\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj": {}
+    "C:\\Users\\Logan\\Source\\Repos\\Prog-POE-API-side-6212-\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Logan\\source\\repos\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj": {
+    "C:\\Users\\Logan\\Source\\Repos\\Prog-POE-API-side-6212-\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Logan\\source\\repos\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj",
+        "projectUniqueName": "C:\\Users\\Logan\\Source\\Repos\\Prog-POE-API-side-6212-\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj",
         "projectName": "ContractClaimSystemApi",
-        "projectPath": "C:\\Users\\Logan\\source\\repos\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj",
+        "projectPath": "C:\\Users\\Logan\\Source\\Repos\\Prog-POE-API-side-6212-\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj",
         "packagesPath": "C:\\Users\\Logan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Logan\\source\\repos\\ContractClaimSystemApi\\ContractClaimSystemApi\\obj\\",
+        "outputPath": "C:\\Users\\Logan\\Source\\Repos\\Prog-POE-API-side-6212-\\ContractClaimSystemApi\\ContractClaimSystemApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Logan\\AppData\\Roaming\\NuGet\\NuGet.Config",
