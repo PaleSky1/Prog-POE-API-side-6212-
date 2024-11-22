@@ -1,0 +1,6 @@
+@ContractClaimSystemApi_HostAddress = http://localhost:5209
+
+GET {{ContractClaimSystemApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
