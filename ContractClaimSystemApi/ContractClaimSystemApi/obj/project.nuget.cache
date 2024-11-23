@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "QnJKFiJvFY8=",
+  "dgSpecHash": "wmBRRvXtH+0=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Logan\\source\\repos\\Prog-POE-API-side-6212-\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj",
+  "projectFilePath": "C:\\Users\\Logan\\Source\\Repos\\Prog-POE-API-side-6212-\\ContractClaimSystemApi\\ContractClaimSystemApi\\ContractClaimSystemApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Logan\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\Logan\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
