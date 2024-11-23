@@ -16,24 +16,23 @@ namespace ContractClaimSystemApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Configure Database Context
             builder.Services.AddDbContext<DbApiContext>(options =>
                 options.UseSqlServer("Server=DESKTOP-JA8J3O2;Initial Catalog=ClaimsDb;Integrated Security=True;Encrypt=False;"));
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-            {
-            })
-            .AddEntityFrameworkStores<DbApiContext>()
-            .AddDefaultTokenProviders();
+            // Configure Identity
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { })
+                .AddEntityFrameworkStores<DbApiContext>()
+                .AddDefaultTokenProviders();
 
-
+            // Add Authorization and Authentication
             builder.Services.AddAuthorization();
             builder.Services.AddEndpointsApiExplorer();
 
-
+            // Add Swagger with Bearer Token support
             builder.Services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Contract Claim System API", Version = "v1" });
-
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
@@ -42,7 +41,7 @@ namespace ContractClaimSystemApi
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "Enter your valid token in the text input below.\n\nExample: \" abcdef12345\""
+                    Description = "Enter your valid token in the text input below.\n\nExample: \"Bearer abcdef12345\""
                 });
 
                 options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -63,6 +62,7 @@ namespace ContractClaimSystemApi
 
             var app = builder.Build();
 
+            // Ensure roles are created
             using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -76,7 +76,7 @@ namespace ContractClaimSystemApi
             app.UseAuthentication();
             app.UseAuthorization();
 
-            #region User Registration and Login
+            #region User Registration and Login Endpoints
             app.MapPost("/register", async (UserRegistrationDto model, UserManager<IdentityUser> userManager,
                 RoleManager<IdentityRole> roleManager, DbApiContext dbContext) =>
             {
@@ -115,15 +115,70 @@ namespace ContractClaimSystemApi
                 }
                 return Results.Unauthorized();
             }).WithName("LoginUser").WithOpenApi();
+            #endregion
 
-            app.MapGet("/admin", [Authorize(Roles = "Admin")] () => "Welcome Admin").WithName("AdminEndpoint").WithOpenApi();
-            app.MapGet("/user", [Authorize(Roles = "User")] () => "Welcome User").WithName("UserEndpoint").WithOpenApi();
+            #region Claims Endpoints
+            app.MapPost("/claims", async (TblClaim claim, DbApiContext dbContext) =>
+            {
+                if (claim == null)
+                {
+                    return Results.BadRequest("Claim data is null");
+                }
+
+                dbContext.TblClaim.Add(claim);
+                await dbContext.SaveChangesAsync();
+                return Results.Created($"/claims/{claim.ClaimId}", claim);
+            }).WithName("CreateClaim").WithOpenApi();
+
+            app.MapGet("/claims", async (DbApiContext dbContext) =>
+            {
+                var claims = await dbContext.TblClaim.ToListAsync();
+                return Results.Ok(claims);
+            }).WithName("GetClaims").WithOpenApi();
+
+            app.MapGet("/claims/{id:guid}", async (Guid id, DbApiContext dbContext) =>
+            {
+                var claim = await dbContext.TblClaim.FindAsync(id);
+                if (claim == null)
+                {
+                    return Results.NotFound($"Claim with ID {id} not found");
+                }
+                return Results.Ok(claim);
+            }).WithName("GetClaimById").WithOpenApi();
+
+            app.MapDelete("/claims/{id:guid}", async (Guid id, DbApiContext dbContext) =>
+            {
+                var claim = await dbContext.TblClaim.FindAsync(id);
+                if (claim == null)
+                {
+                    return Results.NotFound($"Claim with ID {id} not found");
+                }
+
+                dbContext.TblClaim.Remove(claim);
+                await dbContext.SaveChangesAsync();
+                return Results.Ok($"Claim with ID {id} deleted");
+            }).WithName("DeleteClaim").WithOpenApi();
+            #endregion
+
+            #region Users Endpoints
+            app.MapDelete("/users/{username}", async (string username, DbApiContext dbContext) =>
+            {
+                var user = await dbContext.TblUser.FirstOrDefaultAsync(u => u.Username == username);
+                if (user == null)
+                {
+                    return Results.NotFound($"User with username {username} not found");
+                }
+
+                dbContext.TblUser.Remove(user);
+                await dbContext.SaveChangesAsync();
+                return Results.Ok($"User with username {username} deleted");
+            }).WithName("DeleteUser").WithOpenApi();
             #endregion
 
             app.Run();
         }
 
-        #region Generate JWT Token with User Rights
+        #region Generate JWT Token with User Roles
         private static string GenerateJwtToken(IdentityUser user, UserManager<IdentityUser> userManager)
         {
             var userRoles = userManager.GetRolesAsync(user).Result;
@@ -166,6 +221,3 @@ namespace ContractClaimSystemApi
         #endregion
     }
 }
-
-
-

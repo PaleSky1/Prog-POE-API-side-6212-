@@ -11,14 +11,15 @@ namespace ContractClaimSystemApi.Models
         public DbApiContext()
         {
         }
+
         public DbApiContext(DbContextOptions<DbApiContext> options)
-    :   base(options)
+            : base(options)
         {
         }
 
+        // DbSets for your entities
         public virtual DbSet<TblUser> TblUser { get; set; }
-
-        public virtual DbSet<TblClaim> TblClaims { get; set; }
+        public virtual DbSet<TblClaim> TblClaim { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -27,12 +28,15 @@ namespace ContractClaimSystemApi.Models
                 optionsBuilder.UseSqlServer("Server=DESKTOP-JA8J3O2;Initial Catalog=ClaimsDb;Integrated Security=True;Encrypt=False;");
             }
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             // TblUser Configuration
             modelBuilder.Entity<TblUser>(entity =>
             {
-                entity.HasKey(e => e.UserId).HasName("PK_tbluser");
+                entity.HasKey(e => e.UserId).HasName("PK_tblUsers");
                 entity.ToTable("tblUsers");
                 entity.Property(e => e.UserId).ValueGeneratedOnAdd();
                 entity.Property(e => e.Username)
@@ -48,17 +52,30 @@ namespace ContractClaimSystemApi.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
-            // TblClaim Configuraration
+
+            // TblClaim Configuration
             modelBuilder.Entity<TblClaim>(entity =>
             {
-                entity.HasKey(e => e.ClaimId).HasName("PK_tblClaim");
+                entity.HasKey(e => e.ClaimId).HasName("PK_tblClaims");
                 entity.ToTable("tblClaims");
-                entity.Property(e => e.ClaimId).HasColumnName("ClaimID").ValueGeneratedOnAdd();
-                entity.Property(e => e.HoursWorked).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.HourlyRate).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.TotalPayment).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.Status).HasMaxLength(50).IsUnicode(false);
-                entity.HasOne(d => d.User).WithMany(p => p.TblClaims).HasForeignKey(d => d.UserId).OnDelete(DeleteBehavior.ClientSetNull).HasConstraintName("FK_tblClaim_tblUser");
+                entity.Property(e => e.ClaimId)
+                    .HasColumnName("ClaimID")
+                    .ValueGeneratedOnAdd();
+                entity.Property(e => e.HoursWorked)
+                    .HasColumnType("decimal(18,2)");
+                entity.Property(e => e.HourlyRate)
+                    .HasColumnType("decimal(18,2)");
+                entity.Property(e => e.TotalPayment)
+                    .HasColumnType("decimal(18,2)");
+                entity.Property(e => e.Status)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.TblClaims)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_tblClaims_tblUsers");
             });
 
             // Identity relationships
@@ -71,6 +88,7 @@ namespace ContractClaimSystemApi.Models
 
             OnModelCreatingPartial(modelBuilder);
         }
+
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
